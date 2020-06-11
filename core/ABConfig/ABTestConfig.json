@@ -1,0 +1,40 @@
+{
+  "layid": 100,
+  "name": "",
+  "divertkey": "random",
+  "defaulttag": "",
+  "whitelistkey": "uuid",
+  "exps": [
+    {
+      "expid": 100,
+      "tag": "",
+      "logtag": "",
+      "status": "AB",
+      "type": "AB",
+      "traffic": 10,
+      "whitelist": [
+        "123",
+        "23423"
+      ],
+      "priority": 1,
+      "mode": 1,
+      "buckets": [
+        2,
+        3,
+        4
+      ],
+      "dimInfo": [
+        {
+          "key": "type",
+          "operator": "=",
+          "value": "[\"1\"]"
+        },
+        {
+          "key": "cid",
+          "operator": "∈",
+          "value": "[\"388\",\"289\"]"
+        }
+      ]
+    }
+  ]
+}
