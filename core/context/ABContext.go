@@ -4,8 +4,8 @@ import "encoding/json"
 
 type ABContext struct {
 	LayId      int               `json:"layId"`
-	TraceTag   string            `json:"traceTag"`  //贯穿多层实验,记录实验Tag
-	GlobalTag  string            `json:"globalTag"` //全局默认Tag
+	TraceTag   string            `json:"traceTag"` //Throughout the multi-layer experiment
+	GlobalTag  string            `json:"globalTag"`
 	ContextMap map[string]string `json:"contextMap"`
 }
 

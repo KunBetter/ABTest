@@ -12,14 +12,14 @@ type DefaultABDistributor struct {
 	ExperimentManager experiment.ExperimentManager
 }
 
-func (dis *DefaultABDistributor) Init(dem *experiment.DefaultExperimentManager, dbs *strategy.DefaultABBucketStrategy) {
-	dis.ExperimentManager = dem
+func (dis *DefaultABDistributor) Init(manager *experiment.DefaultExperimentManager, dbs *strategy.DefaultABBucketStrategy) {
+	dis.ExperimentManager = manager
 	dis.ExperimentManager.Init(nil)
 	dis.AbstractABDistributor.ABBucketStrategy = dbs
 }
 
 func (dis *DefaultABDistributor) Distribute(abTestContext context.ABContext) entity.ABTag {
-	experimentGroup := dis.ExperimentManager.GetExperimentGroup(abTestContext.LayId)
+	experimentGroup := dis.ExperimentManager.GetExpGroups(abTestContext.LayId)
 	if nil == experimentGroup {
 		//LOGGER.info("can not find experiment group by layId:" + abTestContext.getLayId());
 		return dis.GetGlobalTag(abTestContext)

@@ -10,11 +10,11 @@ type MultiExperimentManager struct {
 	ExperimentGroupMap map[int][]ExperimentGroup
 }
 
-func (dem *MultiExperimentManager) GetExperimentGroup(layId int) interface{} {
-	return dem.ExperimentGroupMap[layId]
+func (manager *MultiExperimentManager) GetExpGroups(layId int) interface{} {
+	return manager.ExperimentGroupMap[layId]
 }
 
-func (mem *MultiExperimentManager) handlerExperimentGroup(config string) {
+func (manager *MultiExperimentManager) handlerExperimentGroup(config string) {
 	var egs []ExperimentGroup
 	err := json.Unmarshal([]byte(config), &egs)
 	if err != nil {
@@ -29,6 +29,6 @@ func (mem *MultiExperimentManager) handlerExperimentGroup(config string) {
 			}
 		}
 
-		mem.ExperimentGroupMap[eg0.LayId] = egs
+		manager.ExperimentGroupMap[eg0.LayId] = egs
 	}
 }

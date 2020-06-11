@@ -12,52 +12,52 @@ type AbstractABDistributor struct {
 	ABBucketStrategy strategy.ABBucketStrategy
 }
 
-func (dis *AbstractABDistributor) Distribute(abTestContext context.ABContext, experimentGroup experiment.ExperimentGroup) entity.ABTag {
+func (dis *AbstractABDistributor) Distribute(abTestContext context.ABContext, expGroup experiment.ExperimentGroup) entity.ABTag {
 	//② whitelist
-	whiteKey := experimentGroup.WhiteListKey
+	whiteKey := expGroup.WhiteListKey
 	if "" == whiteKey {
-		whiteKey = experimentGroup.DivertKey
+		whiteKey = expGroup.DivertKey
 	}
 
 	divertValue := abTestContext.ContextMap[whiteKey]
-	for i := 0; i < len(experimentGroup.Experiments); i++ {
-		exp := experimentGroup.Experiments[i]
+	for i := 0; i < len(expGroup.Experiments); i++ {
+		exp := expGroup.Experiments[i]
 		if _, ok := exp.WhiteSet[divertValue]; ok {
-			return dis.GetExperimentTag(abTestContext, experimentGroup, exp)
+			return dis.GetExperimentTag(abTestContext, expGroup, exp)
 		}
 	}
 
 	//③0%
 	sum := 0
-	for i := 0; i < len(experimentGroup.Experiments); i++ {
-		exp := experimentGroup.Experiments[i]
+	for i := 0; i < len(expGroup.Experiments); i++ {
+		exp := expGroup.Experiments[i]
 		sum += exp.Traffic
 	}
 	if sum == 0 {
-		return dis.GetDefaultTag(abTestContext, experimentGroup)
+		return dis.GetDefaultTag(abTestContext, expGroup)
 	}
 
 	//④ 100%
-	for i := 0; i < len(experimentGroup.Experiments); i++ {
-		exp := experimentGroup.Experiments[i]
+	for i := 0; i < len(expGroup.Experiments); i++ {
+		exp := expGroup.Experiments[i]
 		if 100 == exp.Traffic {
-			return dis.GetExperimentTag(abTestContext, experimentGroup, exp)
+			return dis.GetExperimentTag(abTestContext, expGroup, exp)
 		}
 	}
 
 	//⑤ distribute
-	bucket := dis.ABBucketStrategy.DoBucket(abTestContext, experimentGroup.LayId, experimentGroup.DivertKey)
-	for i := 0; i < len(experimentGroup.Experiments); i++ {
-		exp := experimentGroup.Experiments[i]
+	bucket := dis.ABBucketStrategy.DoBucket(abTestContext, expGroup.LayId, expGroup.DivertKey)
+	for i := 0; i < len(expGroup.Experiments); i++ {
+		exp := expGroup.Experiments[i]
 		if _, ok := exp.Buckets[bucket]; ok {
-			return dis.GetExperimentTag(abTestContext, experimentGroup, exp)
+			return dis.GetExperimentTag(abTestContext, expGroup, exp)
 		}
 	}
 
-	return dis.GetDefaultTag(abTestContext, experimentGroup)
+	return dis.GetDefaultTag(abTestContext, expGroup)
 }
 
-func (dis *AbstractABDistributor) GetExperimentTag(abTestContext context.ABContext, experimentGroup experiment.ExperimentGroup, experiment experiment.Experiment) entity.ABTag {
+func (dis *AbstractABDistributor) GetExperimentTag(abTestContext context.ABContext, expGroup experiment.ExperimentGroup, experiment experiment.Experiment) entity.ABTag {
 	logTag := experiment.LogTag
 	if logTag == "" {
 		logTag = experiment.Tag
@@ -66,15 +66,15 @@ func (dis *AbstractABDistributor) GetExperimentTag(abTestContext context.ABConte
 	return entity.ABTag{
 		Tag:      experiment.Tag,
 		LogTag:   logTag,
-		TraceTag: util.AppendTag(abTestContext.TraceTag, experimentGroup.LayId, logTag),
+		TraceTag: util.AppendTag(abTestContext.TraceTag, expGroup.LayId, logTag),
 	}
 }
 
-func (dis *AbstractABDistributor) GetDefaultTag(abTestContext context.ABContext, experimentGroup experiment.ExperimentGroup) entity.ABTag {
+func (dis *AbstractABDistributor) GetDefaultTag(abTestContext context.ABContext, expGroup experiment.ExperimentGroup) entity.ABTag {
 	return entity.ABTag{
-		Tag:      experimentGroup.DefaultTag,
-		LogTag:   experimentGroup.DefaultTag,
-		TraceTag: util.AppendTag(abTestContext.TraceTag, experimentGroup.LayId, experimentGroup.DefaultTag),
+		Tag:      expGroup.DefaultTag,
+		LogTag:   expGroup.DefaultTag,
+		TraceTag: util.AppendTag(abTestContext.TraceTag, expGroup.LayId, expGroup.DefaultTag),
 	}
 }
 

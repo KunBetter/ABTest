@@ -6,27 +6,27 @@ import (
 )
 
 type DefaultExperimentManager struct {
-	ExperimentGroupMap map[int]ExperimentGroup
+	ExpGroupMap map[int]ExperimentGroup
 }
 
-func (dem *DefaultExperimentManager) GetExperimentGroup(layId int) interface{} {
-	return dem.ExperimentGroupMap[layId]
+func (manager *DefaultExperimentManager) GetExpGroups(layId int) interface{} {
+	return manager.ExpGroupMap[layId]
 }
 
-func (dem *DefaultExperimentManager) Init(confList []string) {
+func (manager *DefaultExperimentManager) Init(confList []string) {
 	for i := 0; i < len(confList); i++ {
 		config := confList[i]
-		dem.handlerExperimentGroup(config)
+		manager.handlerExpGroup(config)
 	}
 }
 
-func (dem *DefaultExperimentManager) handlerExperimentGroup(config string) {
-	eg := &ExperimentGroup{}
-	err := json.Unmarshal([]byte(config), &eg)
+func (manager *DefaultExperimentManager) handlerExpGroup(config string) {
+	expGroup := &ExperimentGroup{}
+	err := json.Unmarshal([]byte(config), &expGroup)
 	if err != nil {
 		fmt.Println("some error")
 	}
-	if eg != nil {
-		dem.ExperimentGroupMap[eg.LayId] = *eg
+	if expGroup != nil {
+		manager.ExpGroupMap[expGroup.LayId] = *expGroup
 	}
 }
