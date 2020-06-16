@@ -27,4 +27,4 @@
 ```
 
 #### Next Plan
--[ ] Experimental variables matching supports multiple operators.
+-[] Experimental variables matching supports multiple operators.
