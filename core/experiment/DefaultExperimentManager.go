@@ -13,9 +13,9 @@ func (manager *DefaultExperimentManager) GetExpGroups(layId int) interface{} {
 	return manager.ExpGroupMap[layId]
 }
 
-func (manager *DefaultExperimentManager) Init(confList []string) {
-	for i := 0; i < len(confList); i++ {
-		config := confList[i]
+func (manager *DefaultExperimentManager) LoadConfig(configs []string) {
+	for i := 0; i < len(configs); i++ {
+		config := configs[i]
 		manager.handlerExpGroup(config)
 	}
 }

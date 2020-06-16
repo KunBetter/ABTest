@@ -12,10 +12,9 @@ type MultiABDistributor struct {
 	ExperimentManager experiment.ExperimentManager
 }
 
-func (dis *MultiABDistributor) Init(manager *experiment.MultiExperimentManager, dbs *strategy.DefaultABBucketStrategy) {
+func (dis *MultiABDistributor) Init(manager *experiment.MultiExperimentManager, strategy *strategy.DefaultABBucketStrategy) {
 	dis.ExperimentManager = manager
-	dis.ExperimentManager.Init(nil)
-	dis.AbstractABDistributor.ABBucketStrategy = dbs
+	dis.AbstractABDistributor.ABBucketStrategy = strategy
 }
 
 func (dis *MultiABDistributor) Distribute(abTestContext context.ABContext) entity.ABTag {

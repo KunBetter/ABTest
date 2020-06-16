@@ -12,10 +12,9 @@ type DefaultABDistributor struct {
 	ExperimentManager experiment.ExperimentManager
 }
 
-func (dis *DefaultABDistributor) Init(manager *experiment.DefaultExperimentManager, dbs *strategy.DefaultABBucketStrategy) {
+func (dis *DefaultABDistributor) Init(manager *experiment.DefaultExperimentManager, strategy *strategy.DefaultABBucketStrategy) {
 	dis.ExperimentManager = manager
-	dis.ExperimentManager.Init(nil)
-	dis.AbstractABDistributor.ABBucketStrategy = dbs
+	dis.AbstractABDistributor.ABBucketStrategy = strategy
 }
 
 func (dis *DefaultABDistributor) Distribute(abTestContext context.ABContext) entity.ABTag {
