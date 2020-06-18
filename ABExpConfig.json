@@ -1,40 +1,35 @@
 {
   "layid": 100,
-  "name": "",
+  "name": "test",
   "divertkey": "random",
-  "defaulttag": "",
-  "whitelistkey": "uuid",
-  "exps": [
+  "defaulttag": "true",
+  "whitelistkey": "userid",
+  "conditions": {
+    "type": "1",
+    "id": "5"
+  },
+  "experiments": [
     {
-      "expid": 100,
-      "tag": "",
-      "logtag": "",
-      "status": "AB",
-      "type": "AB",
+      "expid": 1,
       "traffic": 10,
-      "whitelist": [
-        "123",
-        "23423"
+      "whitelists": [
+        "1",
+        "2",
+        "3"
       ],
-      "priority": 1,
-      "mode": 1,
-      "buckets": [
-        2,
-        3,
-        4
+      "tag": "no",
+      "logtag": "no"
+    },
+    {
+      "expid": 2,
+      "traffic": 90,
+      "whitelists": [
+        "6",
+        "7",
+        "8"
       ],
-      "dimInfo": [
-        {
-          "key": "type",
-          "operator": "=",
-          "value": "[\"1\"]"
-        },
-        {
-          "key": "cid",
-          "operator": "∈",
-          "value": "[\"388\",\"289\"]"
-        }
-      ]
+      "tag": "yes",
+      "logtag": "yes"
     }
   ]
 }

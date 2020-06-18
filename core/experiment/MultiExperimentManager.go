@@ -7,19 +7,18 @@ import (
 
 type MultiExperimentManager struct {
 	DefaultExperimentManager
-	experimentGroupMap map[int][]ExperimentGroup
 }
 
 func (manager *MultiExperimentManager) Init() {
-	manager.experimentGroupMap = make(map[int][]ExperimentGroup)
+	manager.ExpGroupMap = make(map[int][]*ExperimentGroup)
 }
 
-func (manager *MultiExperimentManager) GetExpGroups(layId int) interface{} {
-	return manager.experimentGroupMap[layId]
+func (manager *MultiExperimentManager) GetExpGroups(layId int) []*ExperimentGroup {
+	return manager.ExpGroupMap[layId]
 }
 
 func (manager *MultiExperimentManager) handlerExpGroup(config string) {
-	var expGroups []ExperimentGroup
+	var expGroups []*ExperimentGroup
 	err := json.Unmarshal([]byte(config), &expGroups)
 	if err != nil {
 		fmt.Println("parse error")
@@ -33,6 +32,6 @@ func (manager *MultiExperimentManager) handlerExpGroup(config string) {
 			}
 		}
 
-		manager.experimentGroupMap[expGroup0.LayId] = expGroups
+		manager.ExpGroupMap[expGroup0.LayId] = expGroups
 	}
 }

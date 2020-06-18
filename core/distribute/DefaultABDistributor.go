@@ -18,19 +18,15 @@ func (dis *DefaultABDistributor) Init(manager *experiment.DefaultExperimentManag
 }
 
 func (dis *DefaultABDistributor) Distribute(abTestContext context.ABContext) entity.ABTag {
-	experimentGroup := dis.ExperimentManager.GetExpGroups(abTestContext.LayId)
-	if nil == experimentGroup {
+	experimentGroups := dis.ExperimentManager.GetExpGroups(abTestContext.LayId)
+	if nil == experimentGroups {
 		//LOGGER.info("can not find experiment group by layId:" + abTestContext.getLayId());
 		return dis.GetGlobalTag(abTestContext)
 	}
 	//① conditions
-	eg, ok := experimentGroup.(experiment.ExperimentGroup)
-	if !ok {
-		//return errors.New("InitField: require a *Field")
-	}
-	conditions := eg.ConditionSetMap
+	conditions := experimentGroups[0].Conditions
 	if dis.IsMeetCondition(conditions, abTestContext) {
-		return dis.AbstractABDistributor.Distribute(abTestContext, eg)
+		return dis.AbstractABDistributor.Distribute(abTestContext, experimentGroups[0])
 	}
 
 	return dis.GetGlobalTag(abTestContext)

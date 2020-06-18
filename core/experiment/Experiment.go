@@ -1,16 +1,27 @@
 package experiment
 
 type Experiment struct {
-	Traffic   int            `json:"traffic"`
-	Whitelist []string       `json:"whitelist"`
-	Tag       string         `json:"tag"`
-	LogTag    string         `json:"logtag"`
-	Buckets   map[int]int    `json:"buckets"`
-	WhiteSet  map[string]int `json:"whitelist"`
+	Id        int      `json:"expid"`
+	Traffic   int      `json:"traffic"`
+	Whitelist []string `json:"whitelists"`
+	Tag       string   `json:"tag"`
+	LogTag    string   `json:"logtag"`
+	Buckets   Range    `json:"buckets"`
+	WhiteSet  map[string]bool
+}
+
+type Range struct {
+	start, end int
+}
+
+func (r Range) In(b int) bool {
+	return r.start <= b && b < r.end
 }
 
 func (exp *Experiment) setBuckets(s, e int) {
-	for i := s; i < e; i++ {
-		exp.Buckets[i] = 1
+	r := Range{
+		start: s,
+		end:   e,
 	}
+	exp.Buckets = r
 }

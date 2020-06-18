@@ -28,3 +28,4 @@
 
 #### Next Plan
 - [ ] Experimental variables matching supports multiple operators.
+- [ ] Support ‰ traffic experiment.

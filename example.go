@@ -19,6 +19,11 @@ func main() {
 	ab.LoadConfig([]string{string(buf)})
 
 	reqMap := make(map[string]string)
+	reqMap["type"] = "1"
+	reqMap["id"] = "5"
+	reqMap["userid"] = "10"
+	reqMap["layId"] = "100"
+
 	tagMap := ab.Distribute(reqMap)
 
 	fmt.Println(tagMap)

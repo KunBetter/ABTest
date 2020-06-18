@@ -12,25 +12,21 @@ type MultiABDistributor struct {
 	ExperimentManager experiment.ExperimentManager
 }
 
-func (dis *MultiABDistributor) Init(manager *experiment.MultiExperimentManager, strategy *strategy.DefaultABBucketStrategy) {
+func (dis *MultiABDistributor) Init(manager *experiment.DefaultExperimentManager, strategy *strategy.DefaultABBucketStrategy) {
 	dis.ExperimentManager = manager
 	dis.AbstractABDistributor.ABBucketStrategy = strategy
 }
 
 func (dis *MultiABDistributor) Distribute(abTestContext context.ABContext) entity.ABTag {
-	experimentGroup := dis.ExperimentManager.GetExpGroups(abTestContext.LayId)
-	if nil == experimentGroup {
+	experimentGroups := dis.ExperimentManager.GetExpGroups(abTestContext.LayId)
+	if nil == experimentGroups {
 		//LOGGER.info("can not find experiment groups by layId:" + abTestContext.getLayId());
 		return dis.GetGlobalTag(abTestContext)
 	}
-	expGroups, ok := experimentGroup.([]experiment.ExperimentGroup)
-	if !ok {
-		//return errors.New("InitField: require a *Field")
-	}
-	for i := 0; i < len(expGroups); i++ {
-		expGroup := expGroups[i]
+	for i := 0; i < len(experimentGroups); i++ {
+		expGroup := experimentGroups[i]
 		//① conditions
-		conditions := expGroup.ConditionSetMap
+		conditions := expGroup.Conditions
 		if dis.IsMeetCondition(conditions, abTestContext) {
 			return dis.AbstractABDistributor.Distribute(abTestContext, expGroup)
 		}
