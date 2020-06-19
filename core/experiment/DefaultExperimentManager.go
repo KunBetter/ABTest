@@ -31,7 +31,6 @@ func (manager *DefaultExperimentManager) handlerExpGroup(config string) {
 		fmt.Println("some error")
 	}
 
-	ptr := &expGroup
-	ptr.SetBucket()
-	manager.ExpGroupMap[expGroup.LayId] = []*ExperimentGroup{ptr}
+	expGroup.SetBucket()
+	manager.ExpGroupMap[expGroup.LayId] = []*ExperimentGroup{&expGroup}
 }
